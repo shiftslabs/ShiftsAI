@@ -1,4 +1,5 @@
-export function stripMarkdownText(value: string) {
+export function stripMarkdownText(value?: string | null) {
+  if (!value) return ''
   return value
     .replace(/```[\s\S]*?```/g, match =>
       match.replace(/```[^\n]*\n?|\n?```/g, ' ')
