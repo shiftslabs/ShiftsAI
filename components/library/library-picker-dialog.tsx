@@ -36,11 +36,11 @@ const PICKER_SEARCH_DEBOUNCE_MS = 120
 const SERVER_SEARCH_MIN_CHARS = 2
 
 function filterCachedNotes(notes: Note[], query: string) {
-  const normalizedQuery = query.toLowerCase()
+  const normalizedQuery = (query ?? '').toLowerCase()
   return notes
     .filter(note => {
-      const title = stripMarkdownText(note.title).toLowerCase()
-      const content = stripMarkdownText(note.content).toLowerCase()
+      const title = stripMarkdownText(note.title ?? '').toLowerCase()
+      const content = stripMarkdownText(note.content ?? '').toLowerCase()
       return (
         title.includes(normalizedQuery) || content.includes(normalizedQuery)
       )
@@ -49,12 +49,14 @@ function filterCachedNotes(notes: Note[], query: string) {
 }
 
 function filterCachedFiles(files: LibraryFileItem[], query: string) {
-  const normalizedQuery = query.toLowerCase()
+  const normalizedQuery = (query ?? '').toLowerCase()
   return files
     .filter(file => {
+      const filename = (file.filename ?? '').toLowerCase()
+      const mediaType = (file.mediaType ?? '').toLowerCase()
       return (
-        file.filename.toLowerCase().includes(normalizedQuery) ||
-        file.mediaType.toLowerCase().includes(normalizedQuery)
+        filename.includes(normalizedQuery) ||
+        mediaType.includes(normalizedQuery)
       )
     })
     .slice(0, 12)

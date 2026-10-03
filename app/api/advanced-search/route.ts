@@ -410,7 +410,7 @@ async function crawlPage(
 
 function highlightQueryTerms(content: string, query: string): string {
   try {
-    const terms = query
+    const terms = (query ?? '')
       .toLowerCase()
       .split(/\s+/)
       .filter(term => term.length > 2)
@@ -435,8 +435,8 @@ function highlightQueryTerms(content: string, query: string): string {
 
 function calculateRelevanceScore(result: SearXNGResult, query: string): number {
   try {
-    const lowercaseContent = result.content.toLowerCase()
-    const lowercaseQuery = query.toLowerCase()
+    const lowercaseContent = (result.content ?? '').toLowerCase()
+    const lowercaseQuery = (query ?? '').toLowerCase()
     const queryWords = lowercaseQuery
       .split(/\s+/)
       .filter(word => word.length > 2)
@@ -457,7 +457,7 @@ function calculateRelevanceScore(result: SearXNGResult, query: string): number {
     })
 
     // Boost score for matches in the title
-    const lowercaseTitle = result.title.toLowerCase()
+    const lowercaseTitle = (result.title ?? '').toLowerCase()
     if (lowercaseTitle.includes(lowercaseQuery)) {
       score += 20
     }

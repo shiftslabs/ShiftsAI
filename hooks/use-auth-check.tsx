@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { User } from '@supabase/supabase-js'
 
 import { createClient } from '@/lib/supabase/client'
+import { hasSupabasePublicConfig } from '@/lib/supabase/keys'
 
 export function useAuthCheck() {
   const [user, setUser] = useState<User | null>(null)
@@ -14,6 +15,12 @@ export function useAuthCheck() {
     let subscription: { unsubscribe: () => void } | null = null
 
     const checkAuth = async () => {
+      if (!hasSupabasePublicConfig()) {
+        setUser(null)
+        setLoading(false)
+        return
+      }
+
       try {
         const supabase = createClient()
 
